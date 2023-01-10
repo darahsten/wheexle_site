@@ -7,9 +7,9 @@ ENV APP_MODULE website.api:app
 ENV LOG_LEVEL debug
 ENV WEB_CONCURRENCY 2
 
-COPY ./requirements/installed.txt ./requirements/installed.txt
+COPY ./requirements/website.txt ./requirements/website.txt
 RUN pip install --upgrade pip
-RUN pip install -r requirements/installed.txt
+RUN pip install -r requirements/website.txt
 
 COPY .env /app/.env
 #COPY ./app /app/app
