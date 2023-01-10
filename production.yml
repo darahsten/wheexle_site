@@ -10,10 +10,10 @@ services:
       - USE_DOCKER=yes
     restart: unless-stopped
     ports:
-      - "80"
+      - "8080"
     volumes:
       - site_static_files:/static
-    command: gunicorn website.main:app --bind 0.0.0.0:80 -k uvicorn.workers.UvicornWorker
+    command: gunicorn website.main:app --bind 0.0.0.0:8080 -k uvicorn.workers.UvicornWorker
     networks:
       - internal
       - web
@@ -23,6 +23,7 @@ services:
       - traefik.http.routers.fastapi.rule=Host(`www.wheexle.com`)
       - traefik.http.routers.fastapi.tls=true
       - traefik.http.routers.fastapi.tls.certresolver=lets-encrypt
+      - traefik.http.services.fastapi.loadbalancer.server.port=8080
 
 volumes:
   app-db-data:
