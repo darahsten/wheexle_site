@@ -14,7 +14,7 @@ RUN pip install -r requirements/website.txt
 COPY .env /app/.env
 #COPY ./app /app/app
 
-COPY . /website /app/website
+COPY . /website /app/website/
 
 RUN chown -R www-data /app
 
