@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+
+  website:
+    image: '${SITE_IMAGE_NAME?Variable not set}:${TAG-latest}'
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: ./compose/local/website.Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080"
+    volumes:
+      - .:/website
+      - site_static_files:/static
+    command: gunicorn website.main:app --bind 0.0.0.0:8080 -k uvicorn.workers.UvicornWorker
+    networks:
+      - internal
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.website.rule=Host(`wheexle.site.local`)
+      - traefik.http.routers.website.tls=true
+      - traefik.http.routers.service=website
+      - traefik.http.services.website.loadbalancer.server.port=8080
+
+
+volumes:
+  static_files:
+  site_static_files:
+
+networks:
+  proxy:
+    external: True
+  internal:
+    external: False

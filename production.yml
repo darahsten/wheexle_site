@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+
+  website:
+    build:
+      context: .
+      dockerfile: compose/production/website.Dockerfile
+    environment:
+      - USE_DOCKER=yes
+    restart: unless-stopped
+    ports:
+      - "80"
+    volumes:
+      - site_static_files:/static
+    command: gunicorn website.main:app --bind 0.0.0.0:80 -k uvicorn.workers.UvicornWorker
+    networks:
+      - internal
+      - web
+    env_file: .env
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fastapi.rule=Host(`www.wheexle.com`)
+      - traefik.http.routers.fastapi.tls=true
+      - traefik.http.routers.fastapi.tls.certresolver=lets-encrypt
+
+volumes:
+  app-db-data:
+  static_files:
+  site_static_files:
+
+networks:
+  web:
+    external: True
+  internal:
+    external: False

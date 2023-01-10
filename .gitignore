@@ -1,0 +1,7 @@
+.vscode
+.mypy_cache
+workspace.xml
+docker-stack.yml
+*.json
+*.pyc
+.env
