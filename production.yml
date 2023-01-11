@@ -23,6 +23,7 @@ services:
       - traefik.http.routers.fastapi.rule=Host(`www.wheexle.com`)
       - traefik.http.routers.fastapi.tls=true
       - traefik.http.routers.fastapi.tls.certresolver=lets-encrypt
+      - traefik.http.routers.fastapi=fastapi
       - traefik.http.services.fastapi.loadbalancer.server.port=8080
 
 volumes:
